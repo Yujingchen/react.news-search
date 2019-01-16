@@ -1,0 +1,19 @@
+  state = {
+    news: [
+      {
+        author: "phyllis",
+        children: "",
+        created_at: "2006-10-09T19:00:55.000Z",
+        created_at_i: 1160420455,
+        id: 7,
+        options: [],
+        parent_id: null,
+        points: 5,
+        story_id: null,
+        text: null,
+        title: "Sevin Rosen Unfunds - why?",
+        type: "story",
+        url: "http://featured.gigaom.com/2006/10/09/sevin-rosen-unfunds-why/"
+      }
+    ]
+  };

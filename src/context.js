@@ -1,19 +1,40 @@
 import React, { Component } from "react";
 const Context = React.createContext();
 
-class Provider extends Component {
+// const Recuder = {state,action} => {
+//   switch(action.type){
+
+//     case "Search":
+//     return {
+
+//       ...state,
+//       show: "1"
+
+//   }
+// }
+
+// }
+
+export class Provider extends Component {
   state = {
-    news: []
+    news: [],
+    id: [1, 2, 3, 4, 5, 6, 7],
+    show: ""
   };
 
   componentDidMount() {
-    fetch("http://hn.algolia.com/api/v1/items/")
-      .then(response => response.json())
-      .then(data =>
-        this.setState({
-          news: data
-        })
-      );
+    const { id } = this.state;
+    console.log(id);
+    id.map(eachId => {
+      fetch(`http://hn.algolia.com/api/v1/items/${eachId}`)
+        .then(response => response.json())
+        .then(response => {
+          this.setState({
+            news: response
+          });
+          console.log(this.state);
+        });
+    });
   }
 
   //     contacts: [],
@@ -22,8 +43,12 @@ class Provider extends Component {
   //     }
 
   render() {
-    return <div />;
+    return (
+      <Context.Provider value={this.state}>
+        {this.props.children}
+      </Context.Provider>
+    );
   }
 }
 
-export default Provider;
+export const Consumer = Context.Consumer;

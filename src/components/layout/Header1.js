@@ -17,7 +17,15 @@ class Header1 extends Component {
   //   super();
   //   this.search = this.search.bind(this);
   // }
+
+  state = {
+    search: ""
+  };
+
+  onChange = e => this.setState({ [e.target.name]: e.target.value });
+
   render() {
+    const { search } = this.state;
     return (
       <div className="container">
         <nav className=" navbar navbar-expand-sm navbar-light header">
@@ -37,9 +45,10 @@ class Header1 extends Component {
             </div>
             <input
               className="form-control"
-              onChange={this.search}
+              onChange={this.onChange}
               type="search"
               placeholder="Search story"
+              value={search}
             />
             {/* <button className="btn btn-outline-success" type="submit">
             Search
