@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-// import { Consumer } from "../../context";
+import { Consumer } from "../../context";
 
 class Content extends Component {
   state = {
@@ -8,9 +8,12 @@ class Content extends Component {
   render() {
     const { title } = this.state;
     return (
-      //   <Consumer>
-      <div>{title}</div>
-      //   </Consumer>
+      <Consumer>
+        {value => {
+          const { dispatch } = value;
+          return <div>{title}</div>;
+        }}
+      </Consumer>
     );
   }
 }

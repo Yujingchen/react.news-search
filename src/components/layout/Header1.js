@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 // import { Link } from "react-router-dom";
 import "../../App.css";
+// import { Consumer } from "../../context";
 
 // function debounce(func, wait = 1000) {
 //   let timeout;
@@ -13,20 +14,40 @@ import "../../App.css";
 // }
 
 class Header1 extends Component {
-  // constructor() {
-  //   super();
-  //   this.search = this.search.bind(this);
-  // }
-
   state = {
-    search: ""
+    news: [],
+    id: [1, 2],
+    show: []
   };
 
-  onChange = e => this.setState({ [e.target.name]: e.target.value });
+  componentDidMount() {
+    const { id } = this.state;
+    id.map(eachId => {
+      fetch(`http://hn.algolia.com/api/v1/items/${eachId}`)
+        .then(response => response.json())
+        .then(response => {
+          this.setState({
+            news: { ...this.state, show: [response, ...this.state.show] }
+          });
+        });
+    });
+  }
+
+  handleInputChange(e) {
+    const { news } = this.state;
+    console.log(this.state.news);
+    // this.setState({
+    //   show: news.filter(eachShow => eachShow.title.indexOf(e.target.value) > -1)
+    // });
+  }
 
   render() {
-    const { search } = this.state;
+    const { show } = this.state;
     return (
+      // <Consumer>
+      // {value => {
+      //   const { search } = this.state;
+      // return (
       <div className="container">
         <nav className=" navbar navbar-expand-sm navbar-light header">
           <a className=" navbar-brand" href="/">
@@ -45,17 +66,21 @@ class Header1 extends Component {
             </div>
             <input
               className="form-control"
-              onChange={this.onChange}
+              onChange={this.handleInputChange.bind(this)}
               type="search"
               placeholder="Search story"
-              value={search}
             />
             {/* <button className="btn btn-outline-success" type="submit">
             Search
           </button> */}
           </div>
         </nav>
+        {console.log(show)}
       </div>
+      // );
+      //   }
+      // }
+      // </Consumer>
     );
   }
 }

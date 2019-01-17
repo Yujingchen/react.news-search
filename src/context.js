@@ -1,30 +1,27 @@
 import React, { Component } from "react";
 const Context = React.createContext();
 
-// const Recuder = {state,action} => {
-//   switch(action.type){
-
-//     case "Search":
-//     return {
-
-//       ...state,
-//       show: "1"
-
-//   }
-// }
-
-// }
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "SEARCH":
+      return {
+        ...state,
+        show: [action.payload, ...state.show]
+      };
+    default:
+      return state;
+  }
+};
 
 export class Provider extends Component {
   state = {
     news: [],
-    id: [1, 2, 3, 4, 5, 6, 7],
-    show: ""
+    id: [1, 2, 3, 4, 5, 6, 7]
   };
 
   componentDidMount() {
     const { id } = this.state;
-    console.log(id);
+    // console.log(id);
     id.map(eachId => {
       fetch(`http://hn.algolia.com/api/v1/items/${eachId}`)
         .then(response => response.json())
@@ -32,7 +29,7 @@ export class Provider extends Component {
           this.setState({
             news: response
           });
-          console.log(this.state);
+          // console.log(this.state);
         });
     });
   }
