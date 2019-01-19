@@ -1,12 +1,13 @@
 import React, { Component } from "react";
+import axios from "axios";
 const Context = React.createContext();
 
 const reducer = (state, action) => {
   switch (action.type) {
-    case "SEARCH":
+    case "ADD_NEWS":
       return {
         ...state,
-        show: [action.payload, ...state.show]
+        show: [action.payload, ...state.news]
       };
     default:
       return state;
@@ -16,22 +17,24 @@ const reducer = (state, action) => {
 export class Provider extends Component {
   state = {
     news: [],
-    id: [1, 2, 3, 4, 5, 6, 7]
+    id: [1, 2, 3, 4, 5, 6, 7],
+    result: [],
+    dispatch: action => {
+      this.setState(state => reducer(state, action));
+    }
   };
 
-  componentDidMount() {
-    const { id } = this.state;
-    // console.log(id);
-    id.map(eachId => {
-      fetch(`http://hn.algolia.com/api/v1/items/${eachId}`)
-        .then(response => response.json())
-        .then(response => {
-          this.setState({
-            news: response
-          });
-          // console.log(this.state);
-        });
-    });
+  async componentDidMount() {
+    const { id, dispatch } = this.state;
+
+    const response = await Promise.all(
+      id.map(eachId => {
+        axios.get(`http://hn.algolia.com/api/v1/items/${eachId}`);
+      })
+    );
+
+    // dispatch({ type: "ADD_NEWS", payload: response.data });
+    this.setState({ news: response });
   }
 
   //     contacts: [],

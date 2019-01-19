@@ -2,6 +2,7 @@ import React, { Component } from "react";
 // import { Link } from "react-router-dom";
 import "../../App.css";
 // import { Consumer } from "../../context";
+import axios from "axios";
 
 // function debounce(func, wait = 1000) {
 //   let timeout;
@@ -14,39 +15,41 @@ import "../../App.css";
 // }
 
 class Header1 extends Component {
-  state = {
-    news: [],
-    id: [1, 2],
-    show: []
-  };
+  constructor() {
+    super();
+    this.state = {
+      id: [1, 2, 3, 4, 5, 6, 7],
+      result: [],
+      news: [],
+      urls: [
+        "http://hn.algolia.com/api/v1/items/1",
+        "http://hn.algolia.com/api/v1/items/2",
+        "http://hn.algolia.com/api/v1/items/3"
+      ]
+    };
+    this.handleInputChange = this.handleInputChange.bind(this);
+  }
+  async componentDidMount() {
+    const { urls } = this.state;
 
-  componentDidMount() {
-    const { id } = this.state;
-    id.map(eachId => {
-      fetch(`http://hn.algolia.com/api/v1/items/${eachId}`)
-        .then(response => response.json())
-        .then(response => {
-          this.setState({
-            news: { ...this.state, show: [response, ...this.state.show] }
-          });
-        });
+    const response = await Promise.all(urls.map(url => axios.get(url)));
+    // dispatch({ type: "ADD_NEWS", payload: response.data });
+    this.setState({ news: response });
+  }
+  handleInputChange = e => {
+    this.setState({
+      result: this.state.news.filter(
+        item => item.data.title.indexOf(e.target.value) > -1
+      )
     });
-  }
-
-  handleInputChange(e) {
-    const { news } = this.state;
-    console.log(this.state.news);
-    // this.setState({
-    //   show: news.filter(eachShow => eachShow.title.indexOf(e.target.value) > -1)
-    // });
-  }
+  };
+  //??
 
   render() {
-    const { show } = this.state;
     return (
       // <Consumer>
       // {value => {
-      //   const { search } = this.state;
+
       // return (
       <div className="container">
         <nav className=" navbar navbar-expand-sm navbar-light header">
@@ -75,11 +78,12 @@ class Header1 extends Component {
           </button> */}
           </div>
         </nav>
-        {console.log(show)}
+        {this.state.result.map(item => (
+          <div>{item.data.title}</div>
+        ))}
       </div>
-      // );
-      //   }
-      // }
+      //   );
+      // }}
       // </Consumer>
     );
   }
