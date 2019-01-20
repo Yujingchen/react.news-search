@@ -10,7 +10,7 @@ import axios from "axios";
 //     let args = arguments;
 //     let context = this;
 //     clearTimeout(timeout);
-//     timeout = func.apply(context, args);
+//     timeout = setTimeout(() => func.apply(context, args), wait);
 //   };
 // }
 
@@ -21,22 +21,17 @@ class Header1 extends Component {
       ids: Array.from(Array(14).keys()),
       result: [],
       news: [],
-      urls: [],
+      // urls: Array.from(Array(14).keys()).map(
+      //   eachID => `http://hn.algolia.com/api/v1/items/${eachID + 1}`
+      // ),
       warming: "Type something in the input field to use search",
       value: ""
     };
     this.handleInputChange = this.handleInputChange.bind(this);
   }
-
-  async componentWillMount() {
-    this.setState({
-      urls: this.state.ids.map(
-        eachID => `http://hn.algolia.com/api/v1/items/${eachID + 1}`
-      )
-    });
-  }
-
+  /*
   async componentDidMount() {
+    const response = await axios.get('http://hn.algolia.com/api/v1/search?query=foo')
     const response = await Promise.all(
       this.state.urls.map(url => axios.get(url))
     );
@@ -44,13 +39,34 @@ class Header1 extends Component {
       news: response
     });
   }
+  */
+  async startSearch(value) {
+    const response = await axios.get(
+      `http://hn.algolia.com/api/v1/search?query=${value}`
+    );
+    console.log(response);
+    this.setState({
+      result: response.data.hits
+    });
+  }
+  // store = state
+  // reducers == data processing
+  // boilerplate
+  // action makes api call, gets data, and pass the data to reducer.
   handleInputChange = e => {
+    // http://hn.algolia.com/api/v1/search?query=
+    this.startSearch(e.target.value);
+    this.setState({ value: e.target.value });
+    /*
     this.setState({
       value: e.target.value,
       result: this.state.news.filter(
         item => item.data.title.indexOf(e.target.value) > -1
       )
     });
+    */
+
+    // newData = ['123', '234']
   };
 
   render() {
@@ -78,7 +94,7 @@ class Header1 extends Component {
             </div>
             <input
               className="form-control"
-              onChange={this.handleInputChange.bind(this)}
+              onChange={this.handleInputChange}
               type="search"
               placeholder="Search story"
               value={value}
@@ -91,8 +107,8 @@ class Header1 extends Component {
           </div>
         </nav>
         {value.length !== 0 ? (
-          result.length !== 0 ? (
-            result.map(item => <div>{item.data.title}</div>)
+          result.length ? (
+            result.map(item => <div>{item.title}</div>)
           ) : (
             <div>Not found</div>
           )
