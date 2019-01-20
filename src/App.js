@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Header1 from "./components/layout/Header1";
+import Header from "./components/layout/Header";
 import "./App.css";
 // import { Provider } from "./context";
 // import Content from "./components/layout/Content";
@@ -9,7 +9,7 @@ class App extends Component {
     return (
       // <Provider>
       <div className="App">
-        <Header1 />
+        <Header />
       </div>
       // </Provider>
     );

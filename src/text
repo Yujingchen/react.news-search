@@ -17,3 +17,25 @@
       }
     ]
   };
+
+(3) ["http://hn.algolia.com/api/v1/items/1", "http://hn.algolia.com/api/v1/items/2", "http://hn.algolia.com/api/v1/items/3"]
+0: "http://hn.algolia.com/api/v1/items/1"
+1: "http://hn.algolia.com/api/v1/items/2"
+2: "http://hn.algolia.com/api/v1/items/3"
+length: 3
+__proto__: Array(0)
+
+
+(10) ["http://hn.algolia.com/api/v1/items/1", "http://hn.algolia.com/api/v1/items/2", "http://hn.algolia.com/api/v1/items/3", "http://hn.algolia.com/api/v1/items/4", "http://hn.algolia.com/api/v1/items/5", "http://hn.algolia.com/api/v1/items/6", "http://hn.algolia.com/api/v1/items/7", "http://hn.algolia.com/api/v1/items/8", "http://hn.algolia.com/api/v1/items/9", "http://hn.algolia.com/api/v1/items/10"]
+0: "http://hn.algolia.com/api/v1/items/1"
+1: "http://hn.algolia.com/api/v1/items/2"
+2: "http://hn.algolia.com/api/v1/items/3"
+3: "http://hn.algolia.com/api/v1/items/4"
+4: "http://hn.algolia.com/api/v1/items/5"
+5: "http://hn.algolia.com/api/v1/items/6"
+6: "http://hn.algolia.com/api/v1/items/7"
+7: "http://hn.algolia.com/api/v1/items/8"
+8: "http://hn.algolia.com/api/v1/items/9"
+9: "http://hn.algolia.com/api/v1/items/10"
+length: 10
+__proto__: Array(0)
