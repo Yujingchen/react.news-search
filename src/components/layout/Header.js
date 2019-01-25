@@ -46,7 +46,8 @@ class Header1 extends Component {
     );
     console.log(response);
     this.setState({
-      result: response.data.hits
+      result: response.data.hits,
+      isOpen: false
     });
   }
   // store = state
@@ -69,8 +70,13 @@ class Header1 extends Component {
     // newData = ['123', '234']
   };
 
+  toggleOpen = () => {
+    this.setState({ isOpen: !this.state.isOpen });
+  };
+
   render() {
     const { result, value } = this.state;
+    const menuClass = `dropdown-menu${this.state.isOpen ? " show" : ""}`;
     return (
       // <Consumer>
       // {value => {
@@ -100,22 +106,43 @@ class Header1 extends Component {
               value={value}
               id="input"
             />
-
             {/* <button className="btn btn-outline-success" type="submit">
             Search
           </button> */}
           </div>
         </nav>
-        {value.length !== 0 ? (
-          result.length ? (
-            result.map(item => <div>{item.title}</div>)
+        <div className="dropdown" onClick={this.toggleOpen}>
+          <button
+            className="btn btn-light dropdown-toggle"
+            type="button"
+            id="dropdownMenuButton"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            All
+          </button>
+          <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a className="dropdown-item" href="#">
+              Story
+            </a>
+            <a className="dropdown-item" href="#">
+              Comment
+            </a>
+          </div>
+        </div>
+
+        <div>
+          {value.length !== 0 ? (
+            result.length ? (
+              result.map(item => <div>{item.title}</div>)
+            ) : (
+              <div>Not found</div>
+            )
           ) : (
-            <div>Not found</div>
-          )
-        ) : (
-          <div>{this.state.warming}</div>
-        )}
-        {/* <div>{this.state.warming}</div> */}
+            <div>{this.state.warming}</div>
+          )}
+        </div>
       </div>
       //   );
       // }}

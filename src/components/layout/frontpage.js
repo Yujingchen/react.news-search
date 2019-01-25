@@ -40,6 +40,16 @@ class Header extends Component {
             </li>
           </ul>
         </div>
+        <div className="dropdown">
+        <button className="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" 
+        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        All
+        </button>
+        <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <a className="dropdown-item" href="#">Story</a>
+        <a className="dropdown-item" href="#">Comment</a>
+        </div>
+          </div>
       </nav>
     );
   }
