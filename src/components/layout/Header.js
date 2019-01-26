@@ -1,33 +1,21 @@
 import React, { Component } from "react";
-// import { Link } from "react-router-dom";
 import "../../App.css";
-// import { Consumer } from "../../context";
 import axios from "axios";
+import DrowDown from "./drowDown";
 
-// function debounce(func, wait = 1000) {
-//   let timeout;
-//   return function() {
-//     let args = arguments;
-//     let context = this;
-//     clearTimeout(timeout);
-//     timeout = setTimeout(() => func.apply(context, args), wait);
-//   };
-// }
-
-class Header1 extends Component {
+class Header extends Component {
   constructor() {
     super();
     this.state = {
       ids: Array.from(Array(14).keys()),
       result: [],
       news: [],
-      // urls: Array.from(Array(14).keys()).map(
-      //   eachID => `http://hn.algolia.com/api/v1/items/${eachID + 1}`
-      // ),
       warming: "Type something in the input field to use search",
-      value: ""
+      value: "",
+      tag: ""
     };
     this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleOnClick = this.handleOnClick.bind(this);
   }
   /*
   async componentDidMount() {
@@ -40,43 +28,37 @@ class Header1 extends Component {
     });
   }
   */
-  async startSearch(value) {
+  async componentDidMount(value, tag) {
     const response = await axios.get(
-      `http://hn.algolia.com/api/v1/search?query=${value}`
+      `http://hn.algolia.com/api/v1/search?query=${tag}`
     );
-    console.log(response);
     this.setState({
-      result: response.data.hits,
-      isOpen: false
+      news: response.data.hits
     });
+    console.log(this.state.news);
   }
-  // store = state
-  // reducers == data processing
-  // boilerplate
-  // action makes api call, gets data, and pass the data to reducer.
-  handleInputChange = e => {
-    // http://hn.algolia.com/api/v1/search?query=
-    this.startSearch(e.target.value);
-    this.setState({ value: e.target.value });
-    /*
+  async handleOnClick(tag) {
+    const response = await axios.get(
+      `http://hn.algolia.com/api/v1/search?query=foo&tags=story`
+    );
+    this.setState({
+      news: response.data.hits
+    });
+    console.log(tag);
+  }
+
+  handleInputChange(e) {
+    const { value, result } = this.state;
     this.setState({
       value: e.target.value,
-      result: this.state.news.filter(
-        item => item.data.title.indexOf(e.target.value) > -1
-      )
+      result: this.state.news.filter(item => item.title.indexOf(value) > -1)
     });
-    */
-
-    // newData = ['123', '234']
-  };
-
-  toggleOpen = () => {
-    this.setState({ isOpen: !this.state.isOpen });
-  };
+    console.log(result);
+  }
 
   render() {
-    const { result, value } = this.state;
-    const menuClass = `dropdown-menu${this.state.isOpen ? " show" : ""}`;
+    const { result, value, news } = this.state;
+
     return (
       // <Consumer>
       // {value => {
@@ -103,35 +85,11 @@ class Header1 extends Component {
               onChange={this.handleInputChange}
               type="search"
               placeholder="Search story"
-              value={value}
               id="input"
             />
-            {/* <button className="btn btn-outline-success" type="submit">
-            Search
-          </button> */}
           </div>
         </nav>
-        <div className="dropdown" onClick={this.toggleOpen}>
-          <button
-            className="btn btn-light dropdown-toggle"
-            type="button"
-            id="dropdownMenuButton"
-            data-toggle="dropdown"
-            aria-haspopup="true"
-            aria-expanded="false"
-          >
-            All
-          </button>
-          <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <a className="dropdown-item" href="#">
-              Story
-            </a>
-            <a className="dropdown-item" href="#">
-              Comment
-            </a>
-          </div>
-        </div>
-
+        <DrowDown onClick={this.handleOnClick} />
         <div>
           {value.length !== 0 ? (
             result.length ? (
@@ -140,7 +98,7 @@ class Header1 extends Component {
               <div>Not found</div>
             )
           ) : (
-            <div>{this.state.warming}</div>
+            news.map(item => <div>{item.title}</div>)
           )}
         </div>
       </div>
@@ -151,4 +109,4 @@ class Header1 extends Component {
   }
 }
 
-export default Header1;
+export default Header;
