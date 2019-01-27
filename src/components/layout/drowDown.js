@@ -13,10 +13,20 @@ export default class Example extends React.Component {
 
     this.toggle = this.toggle.bind(this);
     this.state = {
-      dropdownOpen: false
+      dropdownOpen: false,
+      select: "All",
+      all: "All",
+      story: "Story",
+      comment: "Comment"
     };
+    this.handleSelect = this.handleSelect.bind(this);
   }
 
+  handleSelect(selected) {
+    this.setState(prevState => ({
+      select: selected
+    }));
+  }
   toggle() {
     this.setState(prevState => ({
       dropdownOpen: !prevState.dropdownOpen
@@ -24,6 +34,7 @@ export default class Example extends React.Component {
   }
 
   render() {
+    const { all, story, comment, select } = this.state;
     return (
       <div className="input-group">
         <div className="input-group-prepend" id="Search">
@@ -31,11 +42,23 @@ export default class Example extends React.Component {
         </div>
         <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
           <DropdownToggle caret id="dropdown">
-            All
+            {select}
           </DropdownToggle>
           <DropdownMenu>
-            <DropdownItem onClick={this.props.onClick}>Story</DropdownItem>
-            <DropdownItem onClick={() => this.props.func("bar&tags=comment")}>
+            <DropdownItem href="#/" onClick={this.handleSelect.bind(this, all)}>
+              All
+            </DropdownItem>
+            {/* {() => this.props.func("")} */}
+            <DropdownItem
+              href="#/search/story"
+              onClick={this.handleSelect.bind(this, story)}
+            >
+              Story
+            </DropdownItem>
+            <DropdownItem
+              href="#/search/comment"
+              onClick={this.handleSelect.bind(this, comment)}
+            >
               Comment
             </DropdownItem>
           </DropdownMenu>

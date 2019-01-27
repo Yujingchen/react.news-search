@@ -1,69 +1,67 @@
 import React, { Component } from "react";
 import "../../App.css";
 import axios from "axios";
-import DrowDown from "./drowDown";
-
+import {
+  Dropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem
+} from "reactstrap";
 class Header extends Component {
   constructor() {
     super();
     this.state = {
-      ids: Array.from(Array(14).keys()),
-      result: [],
       news: [],
       warming: "Type something in the input field to use search",
       value: "",
-      tag: ""
+      tag: "all",
+      dropdownOpen: false
     };
+    this.toggle = this.toggle.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
+    this.startSearch = this.startSearch.bind(this);
     this.handleOnClick = this.handleOnClick.bind(this);
   }
-  /*
-  async componentDidMount() {
-    const response = await axios.get('http://hn.algolia.com/api/v1/search?query=foo')
-    const response = await Promise.all(
-      this.state.urls.map(url => axios.get(url))
-    );
-    this.setState({
-      news: response
-    });
+
+  toggle() {
+    this.setState(prevState => ({
+      dropdownOpen: !prevState.dropdownOpen
+    }));
   }
-  */
-  async componentDidMount(value, tag) {
+
+  async componentDidMount(value) {
     const response = await axios.get(
-      `http://hn.algolia.com/api/v1/search?query=${tag}`
+      `http://hn.algolia.com/api/v1/search?tags=front_page`
     );
     this.setState({
       news: response.data.hits
     });
-    console.log(this.state.news);
   }
-  async handleOnClick(tag) {
+
+  async handleOnClick(data) {
+    this.setState({
+      tag: data
+    });
+  }
+  async startSearch(value, tag) {
     const response = await axios.get(
-      `http://hn.algolia.com/api/v1/search?query=foo&tags=story`
+      `http://hn.algolia.com/api/v1/search?query=${value}${tag}`
     );
     this.setState({
       news: response.data.hits
     });
-    console.log(tag);
   }
 
   handleInputChange(e) {
-    const { value, result } = this.state;
     this.setState({
-      value: e.target.value,
-      result: this.state.news.filter(item => item.title.indexOf(value) > -1)
+      value: e.target.value
     });
-    console.log(result);
+    this.startSearch(e.target.value);
   }
 
   render() {
-    const { result, value, news } = this.state;
-
+    const { value, news } = this.state;
     return (
-      // <Consumer>
-      // {value => {
-
-      // return (
       <div className="container">
         <nav className=" navbar navbar-expand-sm navbar-light header">
           <a className=" navbar-brand" href="/">
@@ -86,25 +84,34 @@ class Header extends Component {
               type="search"
               placeholder="Search story"
               id="input"
+              value={value}
             />
           </div>
         </nav>
-        <DrowDown onClick={this.handleOnClick} />
+
+        <div className="input-group">
+          <div className="input-group-prepend" id="Search">
+            Search
+          </div>
+          <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
+            <DropdownToggle caret id="dropdown">
+              Story
+            </DropdownToggle>
+            <DropdownMenu>
+              <DropdownItem href="#/">All</DropdownItem>
+              {/* {() => this.props.func("")} */}
+              <DropdownItem href="#/search/story">Story</DropdownItem>
+              <DropdownItem href="#/search/comment">Comment</DropdownItem>
+            </DropdownMenu>
+          </Dropdown>
+        </div>
+
         <div>
-          {value.length !== 0 ? (
-            result.length ? (
-              result.map(item => <div>{item.title}</div>)
-            ) : (
-              <div>Not found</div>
-            )
-          ) : (
-            news.map(item => <div>{item.title}</div>)
-          )}
+          {news.map(item => (
+            <div>{item.title}</div>
+          ))}
         </div>
       </div>
-      //   );
-      // }}
-      // </Consumer>
     );
   }
 }
