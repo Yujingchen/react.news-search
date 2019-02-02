@@ -74,4 +74,30 @@
   font-size: 12px;
   text-align: right;
   margin-right: 5px;
+  margin-left: 12px;
+}
+
+.dropdown-menu {
+  z-index: 1000;
+  display: none;
+  float: left;
+  min-width: 5rem;
+  padding: 0px;
+  margin: 0.125rem 0 0;
+  font-size: 1rem;
+  color: #212529;
+  text-align: left;
+  list-style: none;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 0.25rem;
+}
+.dropdown-item {
+  display: block;
+  padding: 5px 7px;
+  text-decoration: none;
+  color: rgb(92, 92, 92);
+  border-bottom: 1px solid rgb(230, 232, 234);
+  font-size: 13px;
 }

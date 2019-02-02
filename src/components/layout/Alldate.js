@@ -5,8 +5,10 @@ import {
   Dropdown,
   DropdownToggle,
   DropdownMenu,
-  DropdownItem
+  DropdownItem,
+  UncontrolledDropdown
 } from "reactstrap";
+
 class Header extends Component {
   constructor() {
     super();
@@ -45,7 +47,7 @@ class Header extends Component {
   }
   async startSearch(value, tag) {
     const response = await axios.get(
-      `http://hn.algolia.com/api/v1/search?query=${value}${tag}`
+      `http://hn.algolia.com/api/v1/search?query=${value}&page=1`
     );
     this.setState({
       news: response.data.hits
@@ -60,6 +62,20 @@ class Header extends Component {
   }
 
   render() {
+    const spanStyle = {
+      margin: "0 3px 0 10px",
+      fontSize: "12px",
+      lineHeight: "27px",
+      textAlign: "right"
+    };
+    const dropdownList = {
+      display: "block",
+      padding: "5px 7px",
+      textDecoration: "none",
+      color: "#5C5C5C",
+      borderBottom: "1px solid #e6e8ea",
+      linehHeight: "24px"
+    };
     const { value, news } = this.state;
     return (
       <div className="container">
@@ -73,7 +89,6 @@ class Header extends Component {
             />
             <span style={{ color: "white" }}> Search Hacker News</span>
           </a>
-
           <div className="input-group">
             <div className="input-group-prepend">
               <i className="fa fa-search  fa-lg search-icon" />
@@ -93,17 +108,32 @@ class Header extends Component {
           <div className="input-group-prepend" id="Search">
             Search
           </div>
-          <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
-            <DropdownToggle caret id="dropdown">
-              Story
-            </DropdownToggle>
-            <DropdownMenu>
-              <DropdownItem href="#/">All</DropdownItem>
-              {/* {() => this.props.func("")} */}
-              <DropdownItem href="#/search/story">Story</DropdownItem>
-              <DropdownItem href="#/search/comment">Comment</DropdownItem>
-            </DropdownMenu>
-          </Dropdown>
+          <div>
+            <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
+              <DropdownToggle caret id="dropdown">
+                All
+              </DropdownToggle>
+              <DropdownMenu right>
+                <DropdownItem href="#/">All</DropdownItem>
+                <DropdownItem href="#/search/story">Story</DropdownItem>
+                <DropdownItem href="#/search/comment">Comment</DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
+          </div>
+          <span style={spanStyle}> by</span>
+          <div>
+            <UncontrolledDropdown>
+              <DropdownToggle caret id="dropdown">
+                Date
+              </DropdownToggle>
+              <DropdownMenu>
+                <DropdownItem href="#/" style={dropdownList}>
+                  Popularity
+                </DropdownItem>
+                <DropdownItem href="/">Date</DropdownItem>
+              </DropdownMenu>
+            </UncontrolledDropdown>
+          </div>
         </div>
 
         <div>

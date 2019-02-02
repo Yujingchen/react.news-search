@@ -1,12 +1,8 @@
 import React, { Component } from "react";
 import "../../App.css";
 import axios from "axios";
-import {
-  Dropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem
-} from "reactstrap";
+import DropDown from "./DropDown";
+import Search from "./Search";
 
 class Header extends Component {
   constructor() {
@@ -16,7 +12,17 @@ class Header extends Component {
       warming: "Type something in the input field to use search",
       value: "",
       tag: "all",
-      dropdownOpen: false
+      firstCaret: "All",
+      secondCaret: "Popularity",
+      firstDropDowns: [
+        { name: "All", url: "/", id: "0" },
+        { name: "Story", url: "/search/story", id: "1" },
+        { name: "Comment", url: "/search/comment", id: "2" }
+      ],
+      secondDropDowns: [
+        { name: "Popularity", url: "/", id: "0" },
+        { name: "Date", url: "/", id: "1" }
+      ]
     };
     this.toggle = this.toggle.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -30,7 +36,7 @@ class Header extends Component {
     }));
   }
 
-  async componentDidMount(value) {
+  async componentDidMount() {
     const response = await axios.get(
       `http://hn.algolia.com/api/v1/search?tags=front_page`
     );
@@ -39,14 +45,14 @@ class Header extends Component {
     });
   }
 
-  async handleOnClick(data) {
+  handleOnClick(data) {
     this.setState({
       tag: data
     });
   }
   async startSearch(value, tag) {
     const response = await axios.get(
-      `http://hn.algolia.com/api/v1/search?query=${value}`
+      `http://hn.algolia.com/api/v1/search?query=${value}&page=1`
     );
     this.setState({
       news: response.data.hits
@@ -61,52 +67,32 @@ class Header extends Component {
   }
 
   render() {
-    const { value, news } = this.state;
+    const spanStyle = {
+      margin: "0 3px 0 10px",
+      fontSize: "12px",
+      lineHeight: "27px",
+      textAlign: "right"
+    };
+
+    const { news } = this.state;
     return (
       <div className="container">
-        <nav className=" navbar navbar-expand-sm navbar-light header">
-          <a className=" navbar-brand" href="/">
-            <img
-              src="https://hn.algolia.com/assets/logo-hn-search.png"
-              alt=""
-              width="40"
-              height="40"
-            />
-            <span style={{ color: "white" }}> Search Hacker News</span>
-          </a>
-
-          <div className="input-group">
-            <div className="input-group-prepend">
-              <i className="fa fa-search  fa-lg search-icon" />
-            </div>
-            <input
-              className="form-control"
-              onChange={this.handleInputChange}
-              type="search"
-              placeholder="Search story"
-              id="input"
-              value={value}
-            />
-          </div>
-        </nav>
+        <Search />
 
         <div className="input-group">
-          <div className="input-group-prepend" id="Search">
+          <span className="input-group-prepend" style={spanStyle}>
             Search
-          </div>
-          <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
-            <DropdownToggle caret id="dropdown">
-              All
-            </DropdownToggle>
-            <DropdownMenu>
-              <DropdownItem href="#/">All</DropdownItem>
-              {/* {() => this.props.func("")} */}
-              <DropdownItem href="#/search/story">Story</DropdownItem>
-              <DropdownItem href="#/search/comment">Comment</DropdownItem>
-            </DropdownMenu>
-          </Dropdown>
+          </span>
+          <DropDown
+            myDropDowns={this.state.firstDropDowns}
+            caret={this.state.firstCaret}
+          />
+          <span style={spanStyle}> by</span>
+          <DropDown
+            myDropDowns={this.state.secondDropDowns}
+            caret={this.state.secondCaret}
+          />
         </div>
-
         <div>
           {news.map(item => (
             <div>{item.title}</div>

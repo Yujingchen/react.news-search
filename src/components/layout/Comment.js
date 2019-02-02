@@ -65,7 +65,7 @@ class Header extends Component {
     return (
       <div className="container">
         <nav className=" navbar navbar-expand-sm navbar-light header">
-          <a className=" navbar-brand" href="/">
+          <a className=" navbar-brand" href="#/">
             <img
               src="https://hn.algolia.com/assets/logo-hn-search.png"
               alt=""
