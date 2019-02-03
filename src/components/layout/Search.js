@@ -1,14 +1,24 @@
 import React, { Component } from "react";
-import { Consumer } from "../../../Context";
+import { Consumer } from "../../Context";
 class Search extends Component {
-  handleInputChange(e, dispatch) {
-    dispatch({ type: "DELETE_CONTACT" });
-    this.setState({
-      value: e.target.value
-    });
-    this.startSearch(e.target.value);
+  constructor() {
+    super();
+    this.state = {
+      keyword: ""
+    };
+    this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+  handleInputChange(e) {
+    this.setState({
+      keyword: e.target.value
+    });
+  }
+
+  handleSubmit(dispatch, keyword) {
+    dispatch({ type: "KEYWORD_CHANGE", payload: keyword });
+  }
   //   async startSearch(value, tag) {
   //     const response = await axios.get(
   //       `http://hn.algolia.com/api/v1/search?query=${value}&page=1`
@@ -17,8 +27,8 @@ class Search extends Component {
   //       news: response.data.hits
   //     });
   //   }
-
   render() {
+    const { keyword } = this.state;
     return (
       <Consumer>
         {value => {
@@ -41,12 +51,22 @@ class Search extends Component {
                   </div>
                   <input
                     className="form-control"
-                    onChange={this.handleInputChange.bind(this, dispatch)}
+                    onChange={this.handleInputChange}
                     type="search"
                     placeholder="Search story"
                     id="input"
-                    value="{value}"
+                    value={keyword}
                   />
+                  <div className="input-group-append">
+                    <button
+                      type="submit"
+                      className="btn btn-warning text-light"
+                      onSubmit={this.handleSubmit}
+                    >
+                      {" "}
+                      Search
+                    </button>
+                  </div>
                 </div>
               </nav>
             </div>

@@ -6,16 +6,18 @@ import {
   DropdownMenu,
   DropdownItem
 } from "reactstrap";
+// import { Consumer } from "./../../Context";
 
 export default class Example extends React.Component {
   render() {
     const myDropDowns = this.props.myDropDowns;
     return (
+      // <Consumer>
+      //   {value => {
+      //     const { firstDropDowns, secondDropDowns } = value;
+      // return (
       <div>
-        <UncontrolledDropdown
-          isOpen={this.state.dropdownOpen}
-          toggle={this.toggle}
-        >
+        <UncontrolledDropdown>
           <DropdownToggle caret id="dropdown">
             {this.props.caret}
           </DropdownToggle>
@@ -28,6 +30,9 @@ export default class Example extends React.Component {
           </DropdownMenu>
         </UncontrolledDropdown>
       </div>
+      //     );
+      //   }}
+      // </Consumer>
     );
   }
 }

@@ -5,7 +5,7 @@ import Comment from "./components/layout/Comment";
 import "./App.css";
 import { HashRouter as Router, Route, Switch } from "react-router-dom";
 import Alldate from "./components/layout/Alldate";
-import { Provider } from "./context";
+import { Provider } from "./Context";
 // import Content from "./components/layout/Content";
 
 class App extends Component {
