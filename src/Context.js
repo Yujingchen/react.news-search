@@ -7,7 +7,12 @@ const reducer = (state, action) => {
     case "KEYWORD_CHANGE":
       return {
         ...state,
-        value: action.payload
+        news: action.payload
+      };
+    case "NEW_SORT":
+      return {
+        ...state,
+        sortFactor: action.payload
       };
     default:
       return state;
@@ -17,21 +22,17 @@ const reducer = (state, action) => {
 export class Provider extends Component {
   state = {
     news: [],
-    warming: "Type something in the input field to use search",
     keyword: "",
-    tag: "all",
-    firstCaret: "All",
-    secondCaret: "Popularity",
-    key: "",
     firstDropDowns: [
-      { name: "All", url: "/", id: "0" },
-      { name: "Story", url: "/search/story", id: "1" },
-      { name: "Comment", url: "/search/comment", id: "2" }
+      { name: "All", url: "#", id: "0" },
+      { name: "Story", url: "#/search/story", id: "1" },
+      { name: "Comment", url: "#/search/comment", id: "2" }
     ],
     secondDropDowns: [
       { name: "Popularity", url: "/", id: "0" },
-      { name: "Date", url: "/", id: "1" }
+      { name: "Date", url: "#/search/all/date", id: "1" }
     ],
+    sortFactor: { firstFactor: "", secondFactor: "search" },
     dispatch: action => {
       this.setState(state => reducer(state, action));
     }
@@ -42,11 +43,9 @@ export class Provider extends Component {
       "http://hn.algolia.com/api/v1/search?tags=front_page"
     );
     this.setState({
-      news: response.data.hits,
-      key: response.data.hits.objectID
+      news: response.data.hits
     });
   }
-
   render() {
     return (
       <Context.Provider value={this.state}>

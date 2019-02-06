@@ -1,32 +1,31 @@
 import React, { Component } from "react";
 import { Consumer } from "../../Context";
+import axios from "axios";
 class Search extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       keyword: ""
     };
     this.handleInputChange = this.handleInputChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
   }
-
   handleInputChange(e) {
     this.setState({
       keyword: e.target.value
     });
   }
 
-  handleSubmit(dispatch, keyword) {
-    dispatch({ type: "KEYWORD_CHANGE", payload: keyword });
+  async handleSubmit(dispatch, e, props) {
+    e.preventDefault();
+    const { keyword } = this.state;
+    const response = await axios.get(
+      `http://hn.algolia.com/api/v1/${this.props.searchMode}?query=${keyword}${
+        this.props.tag
+      }`
+    );
+    dispatch({ type: "KEYWORD_CHANGE", payload: response.data.hits });
   }
-  //   async startSearch(value, tag) {
-  //     const response = await axios.get(
-  //       `http://hn.algolia.com/api/v1/search?query=${value}&page=1`
-  //     );
-  //     this.setState({
-  //       news: response.data.hits
-  //     });
-  //   }
+
   render() {
     const { keyword } = this.state;
     return (
@@ -60,10 +59,9 @@ class Search extends Component {
                   <div className="input-group-append">
                     <button
                       type="submit"
-                      className="btn btn-warning text-light"
-                      onSubmit={this.handleSubmit}
+                      className="btn btn-secondary text-light"
+                      onClick={this.handleSubmit.bind(this, dispatch)}
                     >
-                      {" "}
                       Search
                     </button>
                   </div>
