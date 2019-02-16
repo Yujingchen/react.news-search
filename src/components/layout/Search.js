@@ -1,37 +1,98 @@
 import React, { Component } from "react";
 import { Consumer } from "../../Context";
 import axios from "axios";
+import DropDown from "./DropDown";
 class Search extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      keyword: ""
+      keyword: "",
+      caretOne: "All",
+      caretTwo: "Popularity"
     };
     this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleClickName = this.handleClickName.bind(this);
   }
+
   handleInputChange(e) {
     this.setState({
       keyword: e.target.value
     });
   }
 
-  async handleSubmit(dispatch, e, props) {
+  handleClickName = nameValue => {
+    if (
+      nameValue === "All" ||
+      nameValue === "Story" ||
+      nameValue === "Comment"
+    ) {
+      this.setState({ caretOne: nameValue });
+    } else {
+      this.setState({ caretTwo: nameValue });
+    }
+  };
+
+  async handleSubmit(dispatch, e) {
     e.preventDefault();
     const { keyword } = this.state;
-    const response = await axios.get(
-      `http://hn.algolia.com/api/v1/${this.props.searchMode}?query=${keyword}${
-        this.props.tag
-      }`
-    );
-    dispatch({ type: "KEYWORD_CHANGE", payload: response.data.hits });
+    if (this.state.caretOne === "All") {
+      const response = await axios.get(
+        `https://hn.algolia.com/api/v1/search?query=${keyword}`
+      );
+      dispatch({ type: "SELECT_COMMENT", payload: false });
+      dispatch({ type: "KEYWORD_CHANGE", payload: response.data.hits });
+    } else if (
+      this.state.caretOne === "Story" &&
+      this.state.caretTwo === "Popularity"
+    ) {
+      const response = await axios.get(
+        `https://hn.algolia.com/api/v1/search?query=${keyword}&tags=story`
+      );
+      dispatch({ type: "SELECT_COMMENT", payload: false });
+      dispatch({ type: "KEYWORD_CHANGE", payload: response.data.hits });
+    } else if (
+      this.state.caretOne === "Story" &&
+      this.state.caretTwo === "Date"
+    ) {
+      const response = await axios.get(
+        `https://hn.algolia.com/api/v1/search_by_date?query=${keyword}&tags=story`
+      );
+      dispatch({ type: "SELECT_COMMENT", payload: false });
+      dispatch({ type: "KEYWORD_CHANGE", payload: response.data.hits });
+    } else if (
+      this.state.caretOne === "Comment" &&
+      this.state.caretTwo === "Popularity"
+    ) {
+      const response = await axios.get(
+        `http://hn.algolia.com/api/v1/search?query=${keyword}&tags=comment`
+      );
+
+      dispatch({ type: "KEYWORD_CHANGE", payload: response.data.hits });
+      dispatch({ type: "SELECT_COMMENT", payload: true });
+    } else if (
+      this.state.caretOne === "Comment" &&
+      this.state.caretTwo === "Date"
+    ) {
+      const response = await axios.get(
+        `http://hn.algolia.com/api/v1/search_by_date?query=${keyword}&tags=comment`
+      );
+      dispatch({ type: "KEYWORD_CHANGE", payload: response.data.hits });
+      dispatch({ type: "SELECT_COMMENT", payload: true });
+    }
   }
 
   render() {
     const { keyword } = this.state;
+    const spanStyle = {
+      margin: "0 3px 0 10px",
+      fontSize: "12px",
+      lineHeight: "27px",
+      textAlign: "right"
+    };
     return (
       <Consumer>
         {value => {
-          const { dispatch } = value;
+          const { dispatch, firstDropDowns, secondDropDowns } = value;
           return (
             <div>
               <nav className=" navbar navbar-expand-sm navbar-light header">
@@ -67,6 +128,22 @@ class Search extends Component {
                   </div>
                 </div>
               </nav>
+              <div className="input-group">
+                <span className="input-group-prepend" style={spanStyle}>
+                  Search
+                </span>
+                <DropDown
+                  myDropDowns={firstDropDowns}
+                  caret={this.state.caretOne}
+                  onClickName={this.handleClickName}
+                />
+                <span style={spanStyle}> by</span>
+                <DropDown
+                  myDropDowns={secondDropDowns}
+                  caret={this.state.caretTwo}
+                  onClickName={this.handleClickName}
+                />
+              </div>
             </div>
           );
         }}

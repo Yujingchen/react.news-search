@@ -9,10 +9,10 @@ const reducer = (state, action) => {
         ...state,
         news: action.payload
       };
-    case "NEW_SORT":
+    case "SELECT_COMMENT":
       return {
         ...state,
-        sortFactor: action.payload
+        isComment: action.payload
       };
     default:
       return state;
@@ -23,6 +23,7 @@ export class Provider extends Component {
   state = {
     news: [],
     keyword: "",
+    isComment: false,
     firstDropDowns: [
       { name: "All", url: "#", id: "0" },
       { name: "Story", url: "#/search/story", id: "1" },
@@ -32,7 +33,6 @@ export class Provider extends Component {
       { name: "Popularity", url: "/", id: "0" },
       { name: "Date", url: "#/search/all/date", id: "1" }
     ],
-    sortFactor: { firstFactor: "", secondFactor: "search" },
     dispatch: action => {
       this.setState(state => reducer(state, action));
     }
