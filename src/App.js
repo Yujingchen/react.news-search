@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import SearchPage from "./components/layout/SearchPage";
+import main from "./components/layout/main";
 import "./App.css";
 import { HashRouter as Router, Route, Switch } from "react-router-dom";
 import { Provider } from "./Context";
@@ -12,7 +12,7 @@ class App extends Component {
         <Provider>
           <div className="App">
             <Switch>
-              <Route exact path="/" component={SearchPage} />
+              <Route exact path="/" component={main} />
             </Switch>
           </div>
         </Provider>

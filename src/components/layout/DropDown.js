@@ -20,6 +20,7 @@ export default class Example extends React.Component {
 
   render() {
     const myDropDowns = this.props.myDropDowns;
+
     return (
       <div>
         <UncontrolledDropdown>
