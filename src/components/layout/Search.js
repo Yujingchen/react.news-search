@@ -85,16 +85,17 @@ class Search extends Component {
 
   render() {
     const { keyword } = this.state;
-    const spanStyle = {
-      margin: "0 3px 0 10px",
-      fontSize: "14px",
-      lineHeight: "27px",
-      textAlign: "right"
-    };
+
     return (
       <Consumer>
         {value => {
-          const { dispatch, firstDropDowns, secondDropDowns, news } = value;
+          const {
+            dispatch,
+            firstDropDowns,
+            secondDropDowns,
+            news,
+            isComment
+          } = value;
           return (
             <div>
               <Header
@@ -106,17 +107,24 @@ class Search extends Component {
               <DropDowns
                 firstDropDowns={firstDropDowns}
                 secondDropDowns={secondDropDowns}
-                spanStyle={spanStyle}
                 passClickName={this.handleClickName}
                 caretOne={this.state.caretOne}
                 caretTwo={this.state.caretTwo}
               />
               <div>
-                {news.map(item =>
-                  item.title !== "null" || item.story_title !== "null" ? (
-                    <Result key={item.objectID} news={item} />
-                  ) : null
-                )}
+                {!isComment
+                  ? news.map(item =>
+                      item.title != null &&
+                      item.author != null &&
+                      item.url !== "" ? (
+                        <Result key={item.objectID} news={item} />
+                      ) : null
+                    )
+                  : news.map(item =>
+                      item.story_title != null ? (
+                        <Result key={item.objectID} news={item} />
+                      ) : null
+                    )}
               </div>
               <div>
                 <Pagination

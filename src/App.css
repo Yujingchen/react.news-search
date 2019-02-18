@@ -142,3 +142,10 @@ h5 {
   padding: 15px 20px;
   color: #767676;
 }
+
+#spanStyle {
+  margin: 0 3px 0 10px;
+  font-size: 14px;
+  line-height: 27px;
+  text-align: right;
+}

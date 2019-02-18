@@ -40,7 +40,7 @@ export class Provider extends Component {
 
   async componentDidMount() {
     const response = await axios.get(
-      "http://hn.algolia.com/api/v1/search?tags=front_page"
+      "https://hn.algolia.com/api/v1/search?tags=front_page"
     );
     this.setState({
       news: response.data.hits

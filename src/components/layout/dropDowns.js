@@ -5,7 +5,7 @@ class DropDowns extends Component {
   render() {
     return (
       <div className="input-group" id="dropDownField">
-        <span className="input-group-prepend" style={this.props.spanStyle}>
+        <span className="input-group-prepend" id="spanStyle">
           Search
         </span>
         <DropDown
@@ -13,7 +13,7 @@ class DropDowns extends Component {
           caret={this.props.caretOne}
           onClickName={this.props.passClickName}
         />
-        <span style={this.props.spanStyle}> by</span>
+        <span id="spanStyle"> by</span>
         <DropDown
           myDropDowns={this.props.secondDropDowns}
           caret={this.props.caretTwo}
