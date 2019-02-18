@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Consumer } from "../../Context";
 import axios from "axios";
 import DropDown from "./DropDown";
+
 class Search extends Component {
   constructor(props) {
     super(props);
