@@ -1,54 +1,33 @@
 import React, { Component } from "react";
-import "../../App.css";
+import ResultItem from "./resultItem";
 import { Consumer } from "./../../Context";
 
-class Result extends Component {
-  componentDidMount() {
-    window.scrollTo(0, 0);
-  }
+export default class result extends Component {
   render() {
-    const item = {
-      borderBottom: "solid 1px #eee",
-      marginTop: "5px"
-    };
-
     return (
       <Consumer>
         {value => {
-          const {
-            title,
-            story_title,
-            comment_text,
-            url,
-            story_url
-          } = this.props.news;
+          const { news } = value;
           const { isComment } = value;
           return (
-            <React.Fragment>
-              {isComment ? (
-                <div style={item}>
-                  <h5 id="result">
-                    <a href={story_url} id="linkStyle">
-                      {story_title}
-                    </a>
-                  </h5>
-                  <p id="commentText">{comment_text}</p>
-                </div>
-              ) : (
-                <div style={item}>
-                  <h5 id="result">
-                    <a href={url} id="linkStyle">
-                      {title}
-                    </a>
-                  </h5>
-                </div>
-              )}
-            </React.Fragment>
+            <div>
+              {!isComment
+                ? news.map(item =>
+                    item.title != null &&
+                    item.author != null &&
+                    item.url !== "" ? (
+                      <ResultItem key={item.objectID} news={item} />
+                    ) : null
+                  )
+                : news.map(item =>
+                    item.story_title != null ? (
+                      <ResultItem key={item.objectID} news={item} />
+                    ) : null
+                  )}
+            </div>
           );
         }}
       </Consumer>
     );
   }
 }
-
-export default Result;

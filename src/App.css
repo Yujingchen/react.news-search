@@ -149,3 +149,38 @@ h5 {
   line-height: 27px;
   text-align: right;
 }
+.pagination {
+  margin-top: 30px;
+  align-items: center;
+}
+
+.page-link {
+  position: relative;
+  display: block;
+  padding: 0.5rem 0.75rem;
+  margin-left: -1px;
+  line-height: 1.25;
+  color: #ff742b;
+  background-color: #fff;
+  border: 1px solid #ff742b;
+}
+
+.page-link:hover {
+  background-color: #fdfefe;
+  color: #ff742b;
+  border: 1px solid #ff742b;
+}
+
+#myIcon {
+  cursor: pointer;
+  color: rgb(157, 157, 157);
+  margin-right: 15px;
+  line-height: 2;
+}
+#iconList {
+  display: flex;
+  justify-content: space-between;
+}
+#myIcon:hover {
+  color: #ff742b;
+}

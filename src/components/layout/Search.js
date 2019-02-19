@@ -38,11 +38,10 @@ class Search extends Component {
       const response = await axios.get(
         `https://hn.algolia.com/api/v1/${sortTwo}?query=${keyword}&tags=${sortOne}&page=${pageNumber}`
       );
-      if (sortOne === "comment") {
-        dispatch({ type: "SELECT_COMMENT", payload: true });
-      } else {
-        dispatch({ type: "SELECT_COMMENT", payload: false });
-      }
+      sortOne === "comment"
+        ? dispatch({ type: "SELECT_COMMENT", payload: true })
+        : dispatch({ type: "SELECT_COMMENT", payload: false });
+
       dispatch({ type: "KEYWORD_CHANGE", payload: response.data.hits });
     }
   }
@@ -74,11 +73,9 @@ class Search extends Component {
       const response = await axios.get(
         `https://hn.algolia.com/api/v1/${sortTwo}?query=${keyword}&tags=${sortOne}`
       );
-      if (sortOne === "comment") {
-        dispatch({ type: "SELECT_COMMENT", payload: true });
-      } else {
-        dispatch({ type: "SELECT_COMMENT", payload: false });
-      }
+      sortOne === "comment"
+        ? dispatch({ type: "SELECT_COMMENT", payload: true })
+        : dispatch({ type: "SELECT_COMMENT", payload: false });
       dispatch({ type: "KEYWORD_CHANGE", payload: response.data.hits });
     }
   }
@@ -89,13 +86,7 @@ class Search extends Component {
     return (
       <Consumer>
         {value => {
-          const {
-            dispatch,
-            firstDropDowns,
-            secondDropDowns,
-            news,
-            isComment
-          } = value;
+          const { dispatch, firstDropDowns, secondDropDowns } = value;
           return (
             <div>
               <Header
@@ -103,7 +94,6 @@ class Search extends Component {
                 inputOnchange={this.handleInputChange}
                 value={keyword}
               />
-
               <DropDowns
                 firstDropDowns={firstDropDowns}
                 secondDropDowns={secondDropDowns}
@@ -111,26 +101,10 @@ class Search extends Component {
                 caretOne={this.state.caretOne}
                 caretTwo={this.state.caretTwo}
               />
-              <div>
-                {!isComment
-                  ? news.map(item =>
-                      item.title != null &&
-                      item.author != null &&
-                      item.url !== "" ? (
-                        <Result key={item.objectID} news={item} />
-                      ) : null
-                    )
-                  : news.map(item =>
-                      item.story_title != null ? (
-                        <Result key={item.objectID} news={item} />
-                      ) : null
-                    )}
-              </div>
-              <div>
-                <Pagination
-                  onClickPage={this.handleClickPage.bind(this, dispatch)}
-                />
-              </div>
+              <Result />
+              <Pagination
+                onClickPage={this.handleClickPage.bind(this, dispatch)}
+              />
             </div>
           );
         }}
