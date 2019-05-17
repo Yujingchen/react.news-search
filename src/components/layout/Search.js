@@ -87,26 +87,30 @@ class Search extends Component {
       <Consumer>
         {value => {
           const { dispatch, firstDropDowns, secondDropDowns } = value;
-          return (
-            <div>
-              <Header
-                submitClick={this.handleSubmit.bind(this, dispatch)}
-                inputOnchange={this.handleInputChange}
-                value={keyword}
-              />
-              <DropDowns
-                firstDropDowns={firstDropDowns}
-                secondDropDowns={secondDropDowns}
-                passClickName={this.handleClickName}
-                caretOne={this.state.caretOne}
-                caretTwo={this.state.caretTwo}
-              />
-              <Result />
-              <Pagination
-                onClickPage={this.handleClickPage.bind(this, dispatch)}
-              />
-            </div>
-          );
+          if (value.news != "") {
+            return (
+              <div>
+                <Header
+                  submitClick={this.handleSubmit.bind(this, dispatch)}
+                  inputOnchange={this.handleInputChange}
+                  value={keyword}
+                />
+                <DropDowns
+                  firstDropDowns={firstDropDowns}
+                  secondDropDowns={secondDropDowns}
+                  passClickName={this.handleClickName}
+                  caretOne={this.state.caretOne}
+                  caretTwo={this.state.caretTwo}
+                />
+                <Result />
+                <Pagination
+                  onClickPage={this.handleClickPage.bind(this, dispatch)}
+                />
+              </div>
+            );
+          } else {
+            return <div>Loading...</div>;
+          }
         }}
       </Consumer>
     );
