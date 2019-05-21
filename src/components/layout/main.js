@@ -11,6 +11,7 @@ class SearchPage extends Component {
         {value => {
           return (
             <div className="container">
+            
               <Search />
             </div>
           );

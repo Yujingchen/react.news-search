@@ -9,6 +9,7 @@ export default class result extends Component {
         {value => {
           const { news } = value;
           const { isComment } = value;
+          
           return (
             <div>
               {!isComment

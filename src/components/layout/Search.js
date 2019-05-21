@@ -5,6 +5,7 @@ import DropDowns from "./dropDowns";
 import Pagination from "./pagination";
 import Result from "./result";
 import Header from "./header";
+import Spinner from "./Spinner";
 class Search extends Component {
   constructor(props) {
     super(props);
@@ -109,7 +110,16 @@ class Search extends Component {
               </div>
             );
           } else {
-            return <div>Loading...</div>;
+            return (
+              <div>
+                <Header
+                  submitClick={this.handleSubmit.bind(this, dispatch)}
+                  inputOnchange={this.handleInputChange}
+                  value={keyword}
+                />
+                <Spinner />
+              </div>
+            );
           }
         }}
       </Consumer>
