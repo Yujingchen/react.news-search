@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import DropDown from "./dropDown";
+import DropDown from "./DropDown";
 
 class DropDowns extends Component {
   render() {

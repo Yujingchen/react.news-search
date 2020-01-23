@@ -1,14 +1,18 @@
 import React, { Component } from "react";
 import { Consumer } from "./../../Context";
+import { Link } from 'react-router-dom';
 class Header extends Component {
   render() {
+    function refreshPage() {
+      window.location.reload();
+    }
     return (
       <Consumer>
         {value => {
           return (
             <div>
-              <nav className=" navbar navbar-expand-sm navbar-light header">
-                <a className=" navbar-brand" href="#/">
+              <nav className=" navbar navbar-expand-sm navbar-light header" >
+                <button className=" navbar-brand" to={"/"} onClick={this.props.clearSearch} onClick={refreshPage} style={{ backgroundColor: "#ff7733" }}>
                   <img
                     src="https://hn.algolia.com/assets/logo-hn-search.png"
                     alt=""
@@ -16,7 +20,7 @@ class Header extends Component {
                     height="40"
                   />
                   <span style={{ color: "white" }}> Search Hacker News</span>
-                </a>
+                </button>
                 <div className="input-group">
                   <div className="input-group-prepend">
                     <i className="fa fa-search  fa-lg search-icon" />

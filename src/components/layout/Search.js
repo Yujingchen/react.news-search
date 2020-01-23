@@ -3,7 +3,7 @@ import { Consumer } from "../../Context";
 import axios from "axios";
 import DropDowns from "./dropDowns";
 import Pagination from "./pagination";
-import Result from "./result";
+import Result from "./Result";
 import Header from "./header";
 import Spinner from "./Spinner";
 class Search extends Component {
@@ -21,12 +21,12 @@ class Search extends Component {
     this.handleClickName = this.handleClickName.bind(this);
   }
 
+  
   handleInputChange(e) {
     this.setState({
       keyword: e.target.value
     });
   }
-
   async handleClickPage(dispatch, pageNumber) {
     const { keyword, sortOne, sortTwo } = this.state;
     if (this.state.caretOne === "All") {

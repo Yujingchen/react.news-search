@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import "../../App.css";
 // import DropDown from "./DropDown";
-import Search from "./search";
+import Search from "./Search";
 import { Consumer } from "./../../Context";
 
 class SearchPage extends Component {
@@ -11,7 +11,7 @@ class SearchPage extends Component {
         {value => {
           return (
             <div className="container">
-            
+
               <Search />
             </div>
           );
